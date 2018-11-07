@@ -1,25 +1,44 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import FrontSide from "./FrontSide/index";  
+import BackSide from "./BackSide";
+import moment from "moment";
+import "./panel.css";
+import cities from "./cities.json"; 
 
 class App extends Component {
+  state = {
+    flipped: false,
+    currentCity: cities[3]
+  }
+
+  onFlip = () => {
+    this.setState({
+      flipped: !this.state.flipped
+    });
+  };
+
+  onSelectCity = (city) => {
+    this.setState({currentCity: city})
+  };
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div className={`panel ${this.state.flipped ? "flip" : ""}`}>
+        <div className="panel-front">
+          <FrontSide 
+            onClick={this.onFlip} 
+            currentCity={this.state.currentCity} 
+          />
+        </div>
+
+        <div className="panel-back">
+          <BackSide 
+            cities={cities} 
+            onClick={this.onFlip} 
+            currentCity={this.state.currentCity} 
+            onSelect={this.onSelectCity}
+          />
+        </div>
       </div>
     );
   }
